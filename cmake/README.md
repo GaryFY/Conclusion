@@ -124,6 +124,39 @@ tutorial.cxx文件中的源码会计算一个数的平方根，第一个版本�
 `cd build`     
 `cmake ..`    
 `make`     
+
+形式如下：
+cmake .. -> Makefile
+gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ cmake ..
+-- The C compiler identification is GNU 4.8.4
+-- The CXX compiler identification is GNU 4.8.4
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/gfy/test_cmake/Tutorial/Step1/build
+
+make->Tutorial
+gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ make
+Scanning dependencies of target Tutorial
+[100%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.o
+Linking CXX executable Tutorial
+[100%] Built target Tutorial
+
+可以运行结果：
+gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ ./Tutorial 
+./Tutorial Version 1.0
+Usage: ./Tutorial number
+
+gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ ./Tutorial 25
+The square root of 25 is 5
+
 即可在build文件夹中生成项目，通过为CMake添加-G参数来生成不同平台的makefile文件。
 
 运行Tutorial会提示带版本号的Usage信息，输入Tutorial 25 可以计算25的平方根为5.
@@ -232,6 +265,18 @@ TARGET_LINK_LIBRARIES( target-name lib1 lib2 ...)，设置单个目标需要链�
 
 这样，如果USE_MYMATH在CMake中被配置为ON，则在生成的TutorialConfig.h头文件中，将有USE_MYMATH的宏定义。
 
+cmake ..步骤同Step 1；
+make：
+gfy@ubuntu:~/test_cmake/Tutorial/Step2/build$ make
+Scanning dependencies of target MathFunctions
+[ 50%] Building CXX object MathFunctions/CMakeFiles/MathFunctions.dir/mysqrt.cxx.o
+Linking CXX static library libMathFunctions.a
+[ 50%] Built target MathFunctions
+Scanning dependencies of target Tutorial
+[100%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.o
+Linking CXX executable Tutorial
+[100%] Built target Tutorial
+
 
 ----
 
@@ -299,11 +344,46 @@ TARGET_LINK_LIBRARIES( target-name lib1 lib2 ...)，设置单个目标需要链�
 	
 对于每个do_test宏调用，都会向工程中添加一个新的测试用例；宏参数是测试名、函数的输入以及期望结果。
 
+cmake ..同上；
+
+make install:(位置/usr/local/bin)
+gfy@ubuntu:~/test_cmake/Tutorial/Step3/build$ sudo make install
+[ 50%] Built target MathFunctions
+[100%] Built target Tutorial
+Install the project...
+-- Install configuration: ""
+-- Installing: /usr/local/bin/Tutorial
+-- Installing: /usr/local/include/TutorialConfig.h
+-- Installing: /usr/local/bin/libMathFunctions.a
+-- Up-to-date: /usr/local/include/MathFunctions.h
+
+测试：
+make test:
+gfy@ubuntu:~/test_cmake/Tutorial/Step3/build$ make test
+Running tests...
+Test project /home/gfy/test_cmake/Tutorial/Step3/build
+    Start 1: TutorialRuns
+1/5 Test #1: TutorialRuns .....................   Passed    0.00 sec
+    Start 2: TutorialComp25
+2/5 Test #2: TutorialComp25 ...................   Passed    0.00 sec
+    Start 3: TutorialNegative
+3/5 Test #3: TutorialNegative .................   Passed    0.00 sec
+    Start 4: TutorialSmall
+4/5 Test #4: TutorialSmall ....................   Passed    0.00 sec
+    Start 5: TutorialUsage
+5/5 Test #5: TutorialUsage ....................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 5
+
+Total Test time (real) =   0.02 sec
+
+
 ------
 
 ###Adding System Introspection (Step 4)
 
-下一步，让我们考虑向我们的工程中引入一些依赖于目标平台上可能不具备的特性的代码。在本例中，我们会增加一些依赖于目标平台是否有log或exp函数的代码。当然，几乎每个平台都有这些函数；但是对于tutorial工程，我们假设它们并非如此普遍。如果该平台有log函数，那么我们会在mysqrt函数中使用它去计算平方根。我们首先在顶层CMakeLists文件中使用宏CheckFunctionExists.cmake测试这些函数的可用性：
+下一步，让我们考虑向我们的工程中引入一些依赖于目标平台上可能不具备的特性的代码。在本例中，我们会增加一些依赖于目标平台是否有log或exp函数的代码。当然，几乎每个平台都有这些函数；但是对于tutorial工程，我们假设它们并非如此普遍。如果该平台有log函数，那么我们会在mysqrt函数中使用它去计算平方根。
+我们首先在顶层CMakeLists文件中使用宏CheckFunctionExists.cmake测试这些函数的可用性：
 
 	# does this system provide the log and exp functions?
 	include (CheckFunctionExists.cmake)
