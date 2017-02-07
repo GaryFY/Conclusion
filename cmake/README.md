@@ -126,36 +126,40 @@ tutorial.cxx文件中的源码会计算一个数的平方根，第一个版本�
 `make`     
 
 形式如下：
+
 cmake .. -> Makefile
-gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ cmake ..
--- The C compiler identification is GNU 4.8.4
--- The CXX compiler identification is GNU 4.8.4
--- Check for working C compiler: /usr/bin/cc
--- Check for working C compiler: /usr/bin/cc -- works
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/c++
--- Check for working CXX compiler: /usr/bin/c++ -- works
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Configuring done
--- Generating done
--- Build files have been written to: /home/gfy/test_cmake/Tutorial/Step1/build
+
+	gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ cmake ..
+	-- The C compiler identification is GNU 4.8.4
+	-- The CXX compiler identification is GNU 4.8.4
+	-- Check for working C compiler: /usr/bin/cc
+	-- Check for working C compiler: /usr/bin/cc -- works
+	-- Detecting C compiler ABI info
+	-- Detecting C compiler ABI info - done
+	-- Check for working CXX compiler: /usr/bin/c++
+	-- Check for working CXX compiler: /usr/bin/c++ -- works
+	-- Detecting CXX compiler ABI info
+	-- Detecting CXX compiler ABI info - done
+	-- Configuring done
+	-- Generating done
+	-- Build files have been written to: /home/gfy/test_cmake/Tutorial/Step1/build
 
 make->Tutorial
-gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ make
-Scanning dependencies of target Tutorial
-[100%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.o
-Linking CXX executable Tutorial
-[100%] Built target Tutorial
+
+	gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ make
+	Scanning dependencies of target Tutorial
+	[100%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.o
+	Linking CXX executable Tutorial
+	[100%] Built target Tutorial
 
 可以运行结果：
-gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ ./Tutorial 
-./Tutorial Version 1.0
-Usage: ./Tutorial number
 
-gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ ./Tutorial 25
-The square root of 25 is 5
+	gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ ./Tutorial 
+	./Tutorial Version 1.0
+	Usage: ./Tutorial number
+
+	gfy@ubuntu:~/test_cmake/Tutorial/Step1/build$ ./Tutorial 25
+	The square root of 25 is 5
 
 即可在build文件夹中生成项目，通过为CMake添加-G参数来生成不同平台的makefile文件。
 
@@ -266,16 +270,18 @@ TARGET_LINK_LIBRARIES( target-name lib1 lib2 ...)，设置单个目标需要链�
 这样，如果USE_MYMATH在CMake中被配置为ON，则在生成的TutorialConfig.h头文件中，将有USE_MYMATH的宏定义。
 
 cmake ..步骤同Step 1；
+
 make：
-gfy@ubuntu:~/test_cmake/Tutorial/Step2/build$ make
-Scanning dependencies of target MathFunctions
-[ 50%] Building CXX object MathFunctions/CMakeFiles/MathFunctions.dir/mysqrt.cxx.o
-Linking CXX static library libMathFunctions.a
-[ 50%] Built target MathFunctions
-Scanning dependencies of target Tutorial
-[100%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.o
-Linking CXX executable Tutorial
-[100%] Built target Tutorial
+
+	gfy@ubuntu:~/test_cmake/Tutorial/Step2/build$ make
+	Scanning dependencies of target MathFunctions
+	[ 50%] Building CXX object MathFunctions/CMakeFiles/MathFunctions.dir/mysqrt.cxx.o
+	Linking CXX static library libMathFunctions.a
+	[ 50%] Built target MathFunctions
+	Scanning dependencies of target Tutorial
+	[100%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.o
+	Linking CXX executable Tutorial
+	[100%] Built target Tutorial
 
 
 ----
@@ -347,15 +353,16 @@ Linking CXX executable Tutorial
 cmake ..同上；
 
 make install:(位置/usr/local/bin)
-gfy@ubuntu:~/test_cmake/Tutorial/Step3/build$ sudo make install
-[ 50%] Built target MathFunctions
-[100%] Built target Tutorial
-Install the project...
--- Install configuration: ""
--- Installing: /usr/local/bin/Tutorial
--- Installing: /usr/local/include/TutorialConfig.h
--- Installing: /usr/local/bin/libMathFunctions.a
--- Up-to-date: /usr/local/include/MathFunctions.h
+
+	gfy@ubuntu:~/test_cmake/Tutorial/Step3/build$ sudo make install
+	[ 50%] Built target MathFunctions
+	[100%] Built target Tutorial
+	Install the project...
+	-- Install configuration: ""
+	-- Installing: /usr/local/bin/Tutorial
+	-- Installing: /usr/local/include/TutorialConfig.h
+	-- Installing: /usr/local/bin/libMathFunctions.a
+	-- Up-to-date: /usr/local/include/MathFunctions.h
 
 测试：
 make test:
