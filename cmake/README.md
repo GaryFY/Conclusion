@@ -80,6 +80,8 @@ tutorial.cxx文件中的源码会计算一个数的平方根，第一个版本�
 当CMake配置这个头文件的时候，使用CMakeLists文件中的变量替换@Tutorial_VERSION_MAJOR@ 和 @Tutorial_VERSION_MINOR@ 。  
 接下来修改tutorial.cxx文件包含配置好的头文件来使用版本号。修改后的源码如下：
 
+
+```cxx
 	// A simple program that computes the square root of a number
 	#include <stdio.h>
 	#include <stdlib.h>
@@ -102,6 +104,8 @@ tutorial.cxx文件中的源码会计算一个数的平方根，第一个版本�
 		fprintf(stdout,"The square root of %g is %g\n", inputValue, outputValue);
 		return 0;
 	}
+```	
+
 主要的变化是包含了TutorialConfig.h头文件，在Usage信息中输出版本号。
 
 **注**：修改CMakeLists.txt中的版本变量, 如
@@ -232,7 +236,8 @@ TARGET_LINK_LIBRARIES( target-name lib1 lib2 ...)，设置单个目标需要链�
  
  
 　　这里用USE_MYMATH设置来决定是否MathFunctions应该被编译和执行。注意到，要用一个变量（在这里是EXTRA_LIBS）来收集所有以后会被连接到可执行文件中的可选的库。这是保持带有许多可选部件的较大型工程干净清爽的一种通用的方法。源代码对应的改变相当直白，如下所示：
-   
+
+```cxx   
 	// A simple program that computes the square root of a number
 	#include <stdio.h>
 	#include <stdlib.h>
@@ -264,6 +269,7 @@ TARGET_LINK_LIBRARIES( target-name lib1 lib2 ...)，设置单个目标需要链�
 		fprintf(stdout,"The square root of %g is %g\n", inputValue, outputValue);
 		return 0;
 	}
+```
 	
 在源代码中，我们也使用了USE_MYMATH。这个宏是由CMake通过TutorialConfig.h.in配置文件中的下述语句行提供给源代码的：
 
@@ -419,6 +425,7 @@ make test:
 在本节，我们会展示你应该怎样向一个应用程序的构建过程中添加一个生成的源文件。     
 在本范例中，我们会创建一个预先计算出的平方根表作为构建过程的一部分。MathFunctions子路径下，一个新的MakeTable.cxx源文件来做这件事。
 
+```cxx
 	// A simple program that builds a sqrt table 
 	#include <stdio.h>
 	#include <stdlib.h>
@@ -455,6 +462,7 @@ make test:
 		fclose(fout);
 		return 0;
 	}
+```	
 
 注意到这个表是由合法的C++代码生成的，并且被写入的输出文件的名字是作为一个参数输入的。下一步是将合适的命令添加到MathFunction的CMakeLists文件中，来构建MakeTable可执行文件，然后运行它，作为构建过程的一部分。完成这几步，需要少数的几个命令，如下所示：
 
