@@ -86,7 +86,7 @@ Step 2. `ar`命令将很多.o转换成.a，成为静态库。
 	
 	$ mkdir src
 main.c文件中的内容:
-
+```c
 	#include <stdio.h>
 	#include ”tiger.h”
  
@@ -97,12 +97,13 @@ main.c文件中的内容:
  
 		return 0;     
 	}
+```
 这里main.c程序, 使用了tiger.h头文件给定的接口add(), sub().
 
 头文件提供接口, 动态库提供函数的实现, 是固定的搭配。
 
 tiger.h头文件:
-
+```h
 	#ifndef __TIGER__
 	#define __TIGER__
  
@@ -110,20 +111,21 @@ tiger.h头文件:
 	int sub(int  a,int  b);
  		
 	#endif
-	
+```	
 具体函数实现代码: (add.c)
-
+```c
 	int  add(int a, int b)
 	{
 		return a +b;
-	}	
+	}
+```c	
 sub.c:
-
+```c
 	int  sub(int a, int b)
 	{
 		return  a - b;
 	}
-
+```
 1. 生成目标文件add.o , sub.o ;    
 	`gcc -fpic  -c  add.c`   
 	`gcc -fpic -c sub.c`
