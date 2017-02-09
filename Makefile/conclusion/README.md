@@ -45,6 +45,95 @@ command
 ...
 ```
 targets是文件名，以空格分开，可以使用通配符。一般来说，我们的目标基本上是一个文件，但也有可能是多个文件。  
-command是命令行，如果其不与“target:prerequisites”在一行，那么，必须以[Tab键]开头，如果和prerequisites在一行，那么可以用分号做为分隔.  
+command是命令行，如果其不与“target:prerequisites”在一行，那么，必须以[Tab键]开头，如果和prerequisites在一行，那么可以用分号做为分隔。  
 
+####文件搜索
+`"VPATH"`：当make需要去找寻文件的依赖关系时，你可以在文件前加上路径，但最好的方法是把一个路径告诉make，让make在自动去找。
+```
+VPATH = src:../headers
+```
+上面的定义指定两个目录，`src`和`../headers`，make会按照这个顺序进行搜索。目录由“冒号”分隔。 
 
+或者使用make的`“vpath”`关键字
+* `vpath <pattern> <directories>`
+为符合模式<pattern>的文件指定搜索目录<directories>。
+* `vpath <pattern>`
+清除符合模式<pattern>的文件的搜索目录。
+* `vpath`
+清除所有已被设置好了的文件搜索目录。   
+例如：
+```
+vpath %.h ../headers
+```
+该语句表示，要求make在“../headers”目录下搜索所有以“.h”结尾的文件。` % `的意思是匹配零或若干字符.
+
+####伪目标
+为了避免和文件重名的这种情况，我们可以使用一个特殊的标记`.PHONY`来显示地指明一个目标是“伪目标”
+
+####多目标
+```
+bigoutput littleoutput : text.g
+generate text.g -$(subst output,,$@) > $@
+上述规则等价于：
+bigoutput : text.g
+generate text.g -big > bigoutput
+littleoutput : text.g
+generate text.g -little > littleoutput
+```
+
+其中，`-$(subst output,,$@)`中`$`表示执行一个Makefile的函数，函数名为subst，后面的为参数。
+关于函数，将在后面讲述。这里的这个函数是截取字符串的意思，`$@`表示目标的集合，就像一个数组，`$@`依次取出目标，并执于命令。   
+例：
+```
+objects = foo.o bar.o
+all: $(objects)
+$(objects): %.o: %.c
+$(CC) -c $(CFLAGS) $< -o $@
+```
+上面的例子可以看出：
+* 指明了我们的目标从$object中获取；
+* “%.o”表明要所有以“.o”结尾的目标，也就是“foo.o bar.o”，也就是变量$object集合的模式
+* 依赖模式“%.c”则取模式“%.o”的“%”，也就是“foo bar”，并为其加下“.c”的后缀。我们的依赖目标就是“foo.c bar.c”。
+* 命令中的“$<”和“$@”则是自动化变量，“$<”表示所有的依赖目标集（也就是“foo.c bar.c”），“$@”表示目标集（也就是“foo.o bar.o”
+
+####自动生成依赖性
+GNU组织建议把编译器为每一个源文件的自动生成的依赖关系放到一个文件中，为每一个“name.c”的文件都生成一个“name.d”的Makefile文件，[.d]文件中就存放对应[.c]文件的依赖关系。
+我们可以写出[.c]文件和[.d]文件的依赖关系，并让make自动更新或自成[.d]文件，并把其包含在我们的主Makefile中，这样，我们就可以自动化地生成每个文件的依赖关系了。
+
+###书写命令
+####显示命令
+```
+@echo 正在编译XXX模块......
+```
+输出：“正在编译XXX模块......”  
+如果make执行时，带入make参数“-n”或“--just-print”，那么其只是显示命令，但不会执行命令，这个功能很有利于我们调试我们的Makefile  
+ake参数“-s”或“--slient”则是全面禁止命令的显示。
+
+####命令出错
+make加上“-i”或是“--ignore-errors”参数，那么，Makefile中所有命令都会忽略错误   
+make的参数的是“-k”或是“--keep-going”，这个参数的意思是，如果某规则中的命令出错了，那么就终目该规则的执行，但继续执行其它规则
+
+####嵌套执行make
+```
+subsystem:
+cd subdir && $(MAKE)
+其等价于：
+subsystem:
+$(MAKE) -C subdir
+```
+这两个例子的意思都是先进入“subdir”目录，然后执行make命令。   
+
+####定义命令包
+```
+define run-yacc
+yacc $(firstword $^)
+mv y.tab.c $@
+endef
+```
+“run-yacc”是这个命令包的名字    
+* 第一个命令是运行Yacc程序，因为Yacc程序总是生成“y.tab.c”的文件
+* 第二行的命令就是把这个文件改改名字
+
+###使用变量
+####变量基础
+变量在声明时需要给予初值，而在使用时，需要给在变量名前加上“$”符号，但最好用小括号“（）”或是大括号“{}”把变量给包括起来。   
