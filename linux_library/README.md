@@ -118,7 +118,7 @@ tiger.h头文件:
 	{
 		return a +b;
 	}
-```c	
+```	
 sub.c:
 ```c
 	int  sub(int a, int b)
