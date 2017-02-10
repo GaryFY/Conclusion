@@ -267,11 +267,12 @@ bar:= $(subst $(space),$(comma),$(foo))
 这个函数也就是把$(foo)中的空格替换成逗号，所以$(bar)的值是“a,b,c”。
 
 ####字符串处理函数
-1. subst 字符串替换函数    
+
+1. subst 字符串替换函数
 ```
 $(subst <from>,<to>,<text>)
 ```  
-2. patsubst 模式字符串替换函数    
+2. patsubst 模式字符串替换函数
 ```
 $(patsubst <pattern>,<replacement>,<text>)   
 ```
@@ -279,7 +280,7 @@ $(patsubst <pattern>,<replacement>,<text>)
 ```
 $(patsubst %.c,%.o,x.c.c bar.c)
 ```
-把字串“x.c.c bar.c”符合模式[%.c]的单词替换成[%.o]，返回结果是“x.c.o bar.o”
+把字串“x.c.c bar.c”符合模式[%.c]的单词替换成[%.o]，返回结果是“x.c.o bar.o”   
 3. strip 去空格函数
 ```
 $(strip <string>)
@@ -288,7 +289,7 @@ $(strip <string>)
 ```
 $(strip a b c )
 ```
-把字串“a b c ”去到开头和结尾的空格，结果是“a b c”。    
+把字串“a b c ”去到开头和结尾的空格，结果是“a b c”。     
 4. findstring 查找字符串函数
 ```
 $(findstring <find>,<in>)
@@ -298,7 +299,7 @@ $(findstring <find>,<in>)
 $(findstring a,a b c)
 $(findstring a,b c)
 ```
-第一个函数返回“a”字符串，第二个返回“”字符串（空字符串）。   
+第一个函数返回“a”字符串，第二个返回“”字符串（空字符串）。      
 5. filter
 ```
 $(filter <pattern...>,<text>)
@@ -309,7 +310,7 @@ sources := foo.c bar.c baz.s ugh.h
 foo: $(sources)
 cc $(filter %.c %.s,$(sources)) -o foo
 ```
-$(filter %.c %.s,$(sources))返回的值是“foo.c bar.c baz.s”。   
+$(filter %.c %.s,$(sources))返回的值是“foo.c bar.c baz.s”。       
 6. filter-output
 ```
 $(filter-out <pattern...>,<text>)
