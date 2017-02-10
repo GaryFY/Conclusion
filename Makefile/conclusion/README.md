@@ -272,6 +272,7 @@ bar:= $(subst $(space),$(comma),$(foo))
 ```
 $(subst <from>,<to>,<text>)
 ```
+
 2. patsubst 模式字符串替换函数
 ```
 $(patsubst <pattern>,<replacement>,<text>)   
