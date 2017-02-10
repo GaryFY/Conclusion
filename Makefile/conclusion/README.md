@@ -267,7 +267,7 @@ bar:= $(subst $(space),$(comma),$(foo))
 这个函数也就是把$(foo)中的空格替换成逗号，所以$(bar)的值是“a,b,c”。
 
 ####字符串处理函数
-1. subst 字符串替换函数
+#####subst 字符串替换函数
 
 ```
 $(subst <from>,<to>,<text>)
