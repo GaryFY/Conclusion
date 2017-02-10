@@ -273,7 +273,7 @@ bar:= $(subst $(space),$(comma),$(foo))
 $(subst <from>,<to>,<text>)
 ```
 
-2. patsubst 模式字符串替换函数
+#####patsubst 模式字符串替换函数
 
 ```
 $(patsubst <pattern>,<replacement>,<text>)   
@@ -285,7 +285,7 @@ $(patsubst <pattern>,<replacement>,<text>)
 $(patsubst %.c,%.o,x.c.c bar.c)
 ```
 把字串“x.c.c bar.c”符合模式[%.c]的单词替换成[%.o]，返回结果是“x.c.o bar.o”   
-3. strip 去空格函数
+#####strip 去空格函数
 ```
 $(strip <string>)
 ```
@@ -294,7 +294,7 @@ $(strip <string>)
 $(strip a b c )
 ```
 把字串“a b c ”去到开头和结尾的空格，结果是“a b c”。     
-4. findstring 查找字符串函数
+#####findstring 查找字符串函数
 ```
 $(findstring <find>,<in>)
 ```
@@ -304,7 +304,7 @@ $(findstring a,a b c)
 $(findstring a,b c)
 ```
 第一个函数返回“a”字符串，第二个返回“”字符串（空字符串）。      
-5. filter
+#####filter 过滤函数
 ```
 $(filter <pattern...>,<text>)
 ```
@@ -315,7 +315,81 @@ foo: $(sources)
 cc $(filter %.c %.s,$(sources)) -o foo
 ```
 $(filter %.c %.s,$(sources))返回的值是“foo.c bar.c baz.s”。       
-6. filter-output
+#####filter-output 反过滤函数
 ```
 $(filter-out <pattern...>,<text>)
 ```
+示例：
+```
+objects=main1.o foo.o main2.o bar.o
+mains=main1.o main2.o
+$(filter-out $(mains),$(objects))
+```
+返回值是“foo.o bar.o”。
+#####sort 排序函数
+```
+$(sort <list>)
+```
+示例：
+```
+$(sort foo bar lose)
+```
+返回“bar foo lose” 。
+#####word 取单词函数
+```
+$(word <n>,<text>)
+```
+示例：
+```
+$(word 2, foo bar baz)
+```
+返回值是“bar”。
+#####wordlist 取单词串函数
+```
+$(wordlist <s>,<e>,<text>)
+```
+示例：
+```
+$(wordlist 2, 3, foo bar baz)
+```
+返回值是”bar baz“
+#####words 单词个数统计函数
+```
+$(words <text>)
+```
+示例：
+```
+$(words, foo bar baz)
+```
+返回值是“3”
+#####firstword 首单词函数
+```
+$(firstword <text>)
+```
+示例：
+```
+$(firstword foo bar)
+```
+返回值是“foo”。
+
+####文件名操作函数
+#####dir 取目录函数
+```
+$(dir <names...>)
+```
+目录部分是指最后一个反斜杠（“/”）之前的部分。如果没有反斜杠，那么返回“./”。   
+示例：
+```
+$(dir src/foo.c hacks)
+```
+返回值是“src/ ./”。
+
+#####suffix 取后缀函数
+```
+$(suffix <names...>)
+```
+示例：
+```
+$(suffix src/foo.c src-1.0/bar.c hacks)
+```
+返回值是“.c .c”。
