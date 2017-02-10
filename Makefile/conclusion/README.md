@@ -245,3 +245,72 @@ endif
 * 第三个条件关键字是“ifdef”
 * 第四个条件关键字是“ifndef”
 
+###使用函数
+函数调用，很像变量的使用，也是以“$”来标识的，其语法如下：
+```
+$(<function> <arguments>)
+或是
+${<function> <arguments>}
+```
+<function>就是函数名，make支持的函数不多。   
+<arguments>是函数的参数，参数间以逗号“,”分隔，而函数名和参数之间以“空格”分隔。   
+函数调用以“$”开头，以圆括号或花括号把函数名和参数括起。
+例：
+```
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
+foo:= a b c
+bar:= $(subst $(space),$(comma),$(foo))
+```
+这是一个替换函数，这个函数有三个参数，第一个参数是被替换字串，第二个参数是替换字串，第三个参数是替换操作作用的字串。
+这个函数也就是把$(foo)中的空格替换成逗号，所以$(bar)的值是“a,b,c”。
+
+####字符串处理函数
+1. subst 字符串替换函数    
+```
+$(subst <from>,<to>,<text>)
+```  
+2. patsubst 模式字符串替换函数    
+```
+$(patsubst <pattern>,<replacement>,<text>)   
+```
+例：
+```
+$(patsubst %.c,%.o,x.c.c bar.c)
+```
+把字串“x.c.c bar.c”符合模式[%.c]的单词替换成[%.o]，返回结果是“x.c.o bar.o”
+3. strip 去空格函数
+```
+$(strip <string>)
+```
+示例：
+```
+$(strip a b c )
+```
+把字串“a b c ”去到开头和结尾的空格，结果是“a b c”。    
+4. findstring 查找字符串函数
+```
+$(findstring <find>,<in>)
+```
+示例：
+```
+$(findstring a,a b c)
+$(findstring a,b c)
+```
+第一个函数返回“a”字符串，第二个返回“”字符串（空字符串）。   
+5. filter
+```
+$(filter <pattern...>,<text>)
+```
+示例：
+```
+sources := foo.c bar.c baz.s ugh.h
+foo: $(sources)
+cc $(filter %.c %.s,$(sources)) -o foo
+```
+$(filter %.c %.s,$(sources))返回的值是“foo.c bar.c baz.s”。   
+6. filter-output
+```
+$(filter-out <pattern...>,<text>)
+```
