@@ -384,6 +384,16 @@ $(dir src/foo.c hacks)
 ```
 返回值是“src/ ./”。
 
+#####notdir 取文件函数
+```
+$(notdir <names...>)
+```
+示例：
+```
+$(notdir src/foo.c hacks)
+```
+返回值是“foo.c hacks”。
+
 #####suffix 取后缀函数
 ```
 $(suffix <names...>)
@@ -393,3 +403,177 @@ $(suffix <names...>)
 $(suffix src/foo.c src-1.0/bar.c hacks)
 ```
 返回值是“.c .c”。
+
+#####basename 取前缀函数
+```
+$(basename <names...>)
+```
+示例：
+```
+$(basename src/foo.c src-1.0/bar.c hacks)
+```
+返回值是“src/foo src-1.0/bar hacks”。
+
+#####addsuffix 加后缀函数
+```
+$(addsuffix <suffix>,<names...>)
+```
+示例：
+```
+$(addsuffix .c,foo bar)
+```
+返回值是“foo.c bar.c”。
+
+#####addprefix 加前缀函数
+```
+$(addprefix <prefix>,<names...>)
+```
+示例：
+```
+$(addprefix src/,foo bar)
+```
+返回值是“src/foo src/bar”。
+
+#####join 连接函数
+```
+$(join <list1>,<list2>)
+```
+示例：
+```
+$(join aaa bbb , 111 222 333)
+```
+返回值是“aaa111 bbb222 333”。
+
+####foreach 函数
+```
+$(foreach <var>,<list>,<text>)
+```
+示例：
+```
+names := a b c d
+files := $(foreach n,$(names),$(n).o)
+```
+$(name)中的单词会被挨个取出，并存到变量“n”中
+“$(n).o”每次根据“$(n)”计算出一个值，这些值以空格分隔，最后作为foreach函数的返回
+$(files)的值是“a.o b.o c.o d.o”
+
+####if函数
+```
+$(if <condition>,<then-part>)
+```
+或是
+```
+$(if <condition>,<then-part>,<else-part>)
+```
+if函数的返回值是，如果<condition>为真（非空字符串），那个<then-part>会是整个函数的返回值，
+如果<condition>为假（空字符串），那么<else-part>会是整个函数的返回值，
+此时如果<else-part>没有被定义，那么，整个函数返回空字串。
+
+####call函数
+```
+$(call <expression>,<parm1>,<parm2>,<parm3>...)
+```
+示例：
+```
+reverse = $(1) $(2)
+foo = $(call reverse,a,b)
+```
+运行结果：foo的值就是“a b”。
+
+####origin函数
+```
+$(origin <variable>)
+```
+
+####控制make的函数
+#####error
+```
+$(error <text ...>)
+```
+产生一个致命的错误，<text ...>是错误信息。
+示例：
+```
+ifdef ERROR_001
+$(error error is $(ERROR_001))
+endif
+```
+会在变量ERROR_001定义了后执行时产生error调用
+```
+ERR = $(error found an error!)
+.PHONY: err
+err: ; $(ERR)
+```
+在目录err被执行时才发生error调用。
+#####warning
+```
+$(warning <text ...>)
+```
+这个函数很像error函数，只是它并不会让make退出，只是输出一段警告信息，而make继续执行。
+
+###make的运行
+####make的退出码
+make命令执行后有三个退出码：  
+* 0 - 表示成功执行。
+* 1 - 如果make运行时出现任何错误，其返回1。
+* 2 - 如果你使用了make的“-q”选项，并且make使得一些目标不需要更新，那么返回2。
+
+####指定Makefile
+例如，我们有个makefile的名字是“hchen.mk”，那么，我们可以这样来让make来执行这个文件：
+```
+make –f hchen.mk
+```
+
+####指定目标
+```
+sources = foo.c bar.c
+ifneq ( $(MAKECMDGOALS),clean)
+include $(sources:.c=.d)
+endif
+```
+这个例子，只要我们输入的命令不是“make clean”，那么makefile会自动包含“foo.d”和“bar.d”这两个makefile。  
+“all”
+这个伪目标是所有目标的目标，其功能一般是编译所有的目标。   
+“clean”
+这个伪目标功能是删除所有被make创建的文件。   
+“install”
+这个伪目标功能是安装已编译好的程序，其实就是把目标执行文件拷贝到指定的目标中去。   
+“print”
+这个伪目标的功能是例出改变过的源文件。   
+“tar”
+这个伪目标功能是把源程序打包备份。也就是一个tar文件。   
+“dist”
+这个伪目标功能是创建一个压缩文件，一般是把tar文件压成Z文件。或是gz文件。    
+“TAGS”
+这个伪目标功能是更新所有的目标，以备完整地重编译使用。    
+“check”和“test”
+这两个伪目标一般用来测试makefile的流程。   
+
+###隐含规则
+####关于命令的变量
+* AR   
+函数库打包程序。默认命令是“ar”。
+* AS   
+汇编语言编译程序。默认命令是“as”。
+* CC    
+C语言编译程序。默认命令是“cc”。
+* CXX    
+C++语言编译程序。默认命令是“g++”。
+####关于命令参数的变量
+* ARFLAGS      
+函数库打包程序AR命令的参数。默认值是“rv”。
+* ASFLAGS    
+汇编语言编译器参数。（当明显地调用“.s”或“.S”文件时）。
+* CFLAGS      
+C语言编译器参数。
+* CXXFLAGS    
+C++语言编译器参数。
+
+####自动化变量
+* $@    
+表示规则中的目标文件集。在模式规则中，如果有多个目标，那么，"$@"就是匹配于目标中模式定义的集合。  
+* $%
+仅当目标是函数库文件中，表示规则中的目标成员名。   
+* $<
+依赖目标中的第一个目标名字。如果依赖目标是以模式（即"%"）定义的，那么"$<"将是符合模式的一系列的文件集。   
+* $?
+所有比目标新的依赖目标的集合。以空格分隔。    
