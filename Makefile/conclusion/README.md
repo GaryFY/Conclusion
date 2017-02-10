@@ -137,3 +137,111 @@ endef
 ###使用变量
 ####变量基础
 变量在声明时需要给予初值，而在使用时，需要给在变量名前加上“$”符号，但最好用小括号“（）”或是大括号“{}”把变量给包括起来。   
+
+####变量中的变量
+```
+foo = $(bar)
+bar = $(ugh)
+ugh = Huh?
+all:
+echo $(foo)
+```
+执行“make all”将会打出变量$(foo)的值是“Huh?”（ $(foo)的值是$(bar)，$(bar)的值是$(ugh)，$(ugh)的值是“Huh?”）    
+一个比较有用的操作符是“?=”
+```
+FOO ?= bar
+```
+其含义是，如果FOO没有被定义过，那么变量FOO的值就是“bar”，如果FOO先前被定义过，那么这条语将什么也不做，其等价于：
+```
+ifeq ($(origin FOO), undefined)
+FOO = bar
+endif
+```
+####变量高级用法
+1. 
+```
+foo := a.o b.o c.o
+bar := $(foo:.o=.c)
+```
+先定义了一个“$(foo)”变量，而第二行的意思是把“$(foo)”中所有以“.o”字串“结尾”全部替换成“.c”,$(bar)”的值就是“a.c b.c c.c”   
+2. “把变量的值再当成变量”
+```
+x = y
+y = z
+a := $($(x))
+```
+$(x)的值是“y”，所以$($(x))就是$(y)，于是$(a)的值就是“z”。（注意，是“x=y”，而不是“x=$(y)”）   
+```
+x = $(y)
+y = z
+z = Hello
+a := $($(x))
+```
+这里的$($(x))被替换成了$($(y))，因为$(y)值是“z”，所以，最终结果是：a:=$(z)，也就是“Hello”。   
+
+
+####追加变量值
+```
+objects = main.o foo.o bar.o utils.o
+objects += another.o
+```
+使用“+=”操作符给变量追加值,$(objects)值变成：“main.o foo.o bar.o utils.o another.o”
+
+####override指示符
+有变量是通常make的命令行参数设置的，那么Makefile中对这个变量的赋值会被忽略。如果你想在Makefile中设置这类参数的值，那么，你可以使用“override”指示符。   
+
+####多行变量
+define指示符后面跟的是变量的名字，而重起一行定义变量的值，定义是以endef关键字结束。
+
+####环境变量
+如果我们在环境变量中设置了“CFLAGS”环境变量，那么我们就可以在所有的Makefile中使用这个变量。   
+向下层Makefile传递，则需要使用exprot关键字来声明。
+
+####目标变量
+为某个目标设置局部变量，这种变量被称为“Target-specific Variable”。其语法：   
+```
+<target ...> : <variable-assignment>
+<target ...> : overide <variable-assignment>
+```
+例：
+```
+prog : CFLAGS = -g
+prog : prog.o foo.o bar.o
+$(CC) $(CFLAGS) prog.o foo.o bar.o
+prog.o : prog.c
+$(CC) $(CFLAGS) prog.c
+foo.o : foo.c
+$(CC) $(CFLAGS) foo.c
+bar.o : bar.c
+$(CC) $(CFLAGS) bar.c
+```
+不管全局的$(CFLAGS)的值是什么，在prog目标，以及其所引发的所有规则中（prog.o foo.o bar.o的规则），$(CFLAGS)的值都是“-g”。   
+
+###使用条件判断
+例：判断$(CC)变量是否“gcc”，如果是的话，则使用GNU函数编译目标。
+```
+libs_for_gcc = -lgnu
+normal_libs =
+foo: $(objects)
+ifeq ($(CC),gcc)
+$(CC) -o foo $(objects) $(libs_for_gcc)
+else
+$(CC) -o foo $(objects) $(normal_libs)
+endif
+```
+####语法
+示例一：
+```
+bar =
+foo = $(bar)
+ifdef foo
+frobozz = yes
+else
+frobozz = no
+endif
+```
+* 第一个是我们前面所见过的“ifeq”
+* 第二个条件关键字是“ifneq”
+* 第三个条件关键字是“ifdef”
+* 第四个条件关键字是“ifndef”
+
