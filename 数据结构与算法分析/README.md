@@ -42,14 +42,15 @@
   
 ####12种基础基本操作代码实现  
 * 构造空表  
-{% codeblock [lang:c] [title] [url] [link text] %}
+
+```c
 void InitList(LinkList L)
 {
     L = (LinkList)malloc(sizeof(LNode));
     if(!L)exit(ERROR);
     L->next = NULL;
 }
-{% endcodeblock %}
+```
 * 将链表置为空表  
 ```c
 void ClearList(LinkList L)
