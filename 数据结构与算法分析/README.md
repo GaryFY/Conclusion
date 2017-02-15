@@ -307,7 +307,7 @@ int main()
     {
         for(i = 1;i < m - 1;i++)
         {
-            p = p->next; 
+            p = p->next; //将p指向要删除的第m个节点的前驱节点
         }
         printf("第%d个人自杀了\t",p->next->data);
         //删除第m个结点
