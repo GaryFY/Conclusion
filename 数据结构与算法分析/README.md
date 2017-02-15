@@ -677,7 +677,7 @@ void PushStack(SqStack S,SElemType e)
         S->top = S->base + S->stacksize; //修改栈顶指针指向新的栈顶
         S->stacksize += STACK_INCREMENT; //更新容量 
     }
-    *(S ->top ++) = e; 
+    *(S ->top ++) = e; //栈顶指针加一，并将新插入元素赋值给栈顶空间
 }
 ```
 * 弹出栈中的元素
@@ -685,7 +685,7 @@ void PushStack(SqStack S,SElemType e)
 Status PopStack(SqStack S,SElemType e) 
  {
     if(S->top == S->base) return ERROR;  //栈为空
-    e = *(--S->top);   //栈顶元素值付给e,栈顶指针下移 
+    e = *(--S->top);   //栈顶元素值付给e,栈顶指针下移 （先赋值后下移）
     return OK;      
  }
 ```
