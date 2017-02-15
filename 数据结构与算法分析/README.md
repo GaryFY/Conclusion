@@ -39,10 +39,8 @@
 每次循环， **快指针向后移动两个结点： p = p -> next -> next； 
 慢指针向后移动一个结点： q = q -> next** 
   
-####12种基础基本操作代码实现
-      
+####12种基础基本操作代码实现  
 	1. 构造空表  
-
 ```
 void InitList(LinkList L)
 {
@@ -53,7 +51,6 @@ void InitList(LinkList L)
 ```
      
 	2. 将链表置为空表  
-
 ```
 void ClearList(LinkList L)
 {
@@ -71,7 +68,6 @@ void ClearList(LinkList L)
       
 	3. 判断是否为空表:**有头结点：L -> next = NULL;此时表为空表！ 
 无头结点：L = NULL；此时为空表！**  
-
 ```
 Status ListEmpty(LinkList L)
 {
