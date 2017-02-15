@@ -41,7 +41,7 @@
   
 ####12种基础基本操作代码实现  
 * 构造空表  
-```
+```c
 void InitList(LinkList L)
 {
     L = (LinkList)malloc(sizeof(LNode));
@@ -50,7 +50,7 @@ void InitList(LinkList L)
 }
 ``` 
 * 将链表置为空表  
-```
+```c
 void ClearList(LinkList L)
 {
     LinkList p = L->next;
@@ -66,7 +66,7 @@ void ClearList(LinkList L)
 ```     
 * 判断是否为空表:**有头结点：L -> next = NULL;此时表为空表！ 
 无头结点：L = NULL；此时为空表！**  
-```
+```c
 Status ListEmpty(LinkList L)
 {
     //有头节点的情况，只需判断头结点的指针域是否为空即可
@@ -77,7 +77,7 @@ Status ListEmpty(LinkList L)
      
 * 销毁单链表  
 
-```
+```c
 void DestoryList(LinkList L)
 {
     LinkList q;
@@ -94,7 +94,7 @@ void DestoryList(LinkList L)
 	 
 * 获得表长度  
 
-```
+```c
 int ListLength(LinkList L)
 {
     int i = 0;
@@ -110,7 +110,7 @@ int ListLength(LinkList L)
 	 
 * 获得表中第i个元素的值  
 
-```
+```c
 Status GetElem(LinkList L,int i,ElemType *e)
 {
     int j = 1;
@@ -130,7 +130,7 @@ Status GetElem(LinkList L,int i,ElemType *e)
 	 
 * 查找表中是否存在满足条件的元素  
 
-```
+```c
 int LocateElem(LinkList L,ElemType e,Status(*compare)(ElemType,ElemType))
 {
     int i = 0;  
@@ -147,7 +147,7 @@ int LocateElem(LinkList L,ElemType e,Status(*compare)(ElemType,ElemType))
 	 
 * 获得某个结点的直接前驱 
 
-```
+```c
 Status BeforeElem(LinkList L,ElemType choose,ElemType *before)
 {
     LinkList q,p = L->next;
@@ -168,7 +168,7 @@ Status BeforeElem(LinkList L,ElemType choose,ElemType *before)
 	 
 * 获得某个结点的直接后继  
 
-```
+```c
 Status NextElem(LinkList L,ElemType choose,ElemType *behind)
 {
     LinkList p = L->next;
@@ -187,7 +187,7 @@ Status NextElem(LinkList L,ElemType choose,ElemType *behind)
 	 
 * 往表中第i个位置插入元素  
 
-```
+```c
 Status ListInsert(LinkList L,int i,ElemType e)
 {
     int j = 0;
@@ -211,7 +211,7 @@ Status ListInsert(LinkList L,int i,ElemType e)
 	 
 * 删除表中第i个元素  
 
-```
+```c
 Status ListDelete(LinkList L,int i,ElemType *e)
 {
     int j = 0;
@@ -232,7 +232,7 @@ Status ListDelete(LinkList L,int i,ElemType *e)
 	 
 * 遍历单链表中的所有元素  
 
-```
+```c
 void ListTraverser(LinkList L,void(*visit)(ElemType))
 {
     LinkList p = L->next;
