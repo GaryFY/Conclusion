@@ -488,3 +488,110 @@ Status ListInsert(LinkList L,int i,ElemType e)
 }
 ```
 ![CSDN](http://7xjqvu.com1.z0.glb.clouddn.com/15-12-26/50137676.jpg)
+
+* **删除第i个位置的元素**
+```c
+Status ListDelete(LinkList L,int i,ElemType *e)
+{
+    LinkList p;
+    if(i < 1)return ERROR; //判断删除位置是否合法
+    p = GetElemAdd(L,i);
+    if(!p)return ERROR;  //为NULL说明第i个元素不存在
+    e = p ->data;
+    p ->prior ->next = p ->next; //i-1个结点的后继指向第i+1个结点
+    p ->next ->prior = p ->prior; //第i+1个结点的前驱指向第i - 1个结点
+    free(p); //释放第i个结点
+    return OK; 
+}
+```
+![CSDN](http://7xjqvu.com1.z0.glb.clouddn.com/15-12-26/59728721.jpg)
+
+示例：正序和逆序遍历表中元素    
+```c
+#include <stdio.h>
+#include<stdlib.h>
+
+#define OK 1
+#define ERROR 0
+#define TRUE 1
+#define FALSE 0
+
+typedef int ElemType;  
+typedef int Status;
+typedef struct LNode
+{
+    ElemType data;         //数据域
+    struct LNode *prior;   //前驱指针 
+    struct LNode *next;   //后继指针
+}LNode;  
+typedef struct LNode *LinkList;
+
+//定义一个创建N个结点的方法
+ LinkList ListCreate(int N)
+ {
+    LinkList p,q,head;
+    int i,data;
+    q = head;
+    head = (LinkList)malloc(sizeof(LNode)); 
+    head ->prior = head;
+    head ->next = head;
+    p = head;
+    for(i = 0;i < N;i++)
+    {
+        printf("请输入第%d个结点的值：",i + 1);
+        scanf("%d",&data);
+        q = (LinkList)malloc(sizeof(LNode));
+        q ->data = data;
+        p ->next = q;
+        q ->prior = p;
+        q ->next = head; 
+        head ->prior = q; 
+        p = q; 
+    }
+    return head;
+ } 
+
+ //定义一个打印结点数据的方法
+ void PrintNode(ElemType e)
+ {
+    printf("%d\t",e);
+ } 
+
+ //定义一个正序输出链表的方法
+ void ListTraverse(LinkList L)
+ {
+    LinkList p = L->next;  //指向首元结点
+    while(p!=L)
+    {
+        PrintNode(p->data);
+        p = p ->next;
+    } 
+    printf("\n");
+ } 
+
+ //定义一个逆序输出链表的方法
+ void ListTraverseBack(LinkList L)
+ {
+    LinkList p = L ->prior;  //指向最后一个结点 
+    while(p!=L)
+    {
+        PrintNode(p->data);
+        p = p ->prior;
+    } 
+    printf("\n");
+ } 
+
+ int main()
+ {
+    LinkList p;
+    int N = 0;
+    printf("请输入双向链表的结点个数：");
+    scanf("%d", &N);
+    p = ListCreate(N);
+    printf("正序打印链表中的结点：\n");
+    ListTraverse(p);
+    printf("逆序打印链表中的结点：\n");
+    ListTraverseBack(p); 
+    return 0;
+ }
+```
