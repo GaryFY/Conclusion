@@ -42,7 +42,7 @@
   
 ####12种基础基本操作代码实现  
 * 构造空表  
-{% raw %}
+{% codeblock [lang:language] [title] [url] [link text] %}
 ```c
 void InitList(LinkList L)
 {
@@ -51,7 +51,7 @@ void InitList(LinkList L)
     L->next = NULL;
 }
 ```
-{% endraw %} 
+{% endcodeblock %}
 * 将链表置为空表  
 ```c
 void ClearList(LinkList L)
