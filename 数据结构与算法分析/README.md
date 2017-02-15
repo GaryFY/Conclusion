@@ -41,7 +41,7 @@
   
 ####12种基础基本操作代码实现
       
-1. 构造空表  
+	1. 构造空表  
 
 ```
 void InitList(LinkList L)
@@ -52,7 +52,7 @@ void InitList(LinkList L)
 }
 ```
      
-2. 将链表置为空表  
+	2. 将链表置为空表  
 
 ```
 void ClearList(LinkList L)
@@ -69,7 +69,7 @@ void ClearList(LinkList L)
 } 
 ```   
       
-3. 判断是否为空表:**有头结点：L -> next = NULL;此时表为空表！ 
+	3. 判断是否为空表:**有头结点：L -> next = NULL;此时表为空表！ 
 无头结点：L = NULL；此时为空表！**  
 
 ```
