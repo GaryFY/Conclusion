@@ -246,3 +246,77 @@ void ListTraverser(LinkList L,void(*visit)(ElemType))
     printf("\n");
 }
 ```   
+####单向循环链表
+将终端节点的指针域指向头结点即可，即**head->next = head**;设置**尾指针**；自己指自己   
+#####插入和删除
+* 注意：不同的是如果插入位置是尾结点的话，那么还需要让尾指针指向这个新插入的尾结点    
+* 注意：如果删除的是尾结点的话，那么还要指向删除结点的前一个结点   
+
+例子：约瑟夫问题 （循环链表）    
+一堆人，围成一个圈，然后规定一个数N，然后依次报数，当报数到N，这个人自杀，其他人鼓掌！啪啪啪， 
+接着又从1开始报数，报到N又自杀…以此类推，直到死剩最后一个人，那么游戏结束！  
+```c 
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+
+//定义循环链表的存储结构
+typedef struct LNode
+{
+    int data;         //数据域
+    struct LNode *next;   //指针域 
+}LNode;  
+typedef struct LNode *LinkList;
+
+//定义循环链表的初始化方法
+LinkList createList(int n)
+{
+    printf("\n初始化循环链表\n\n"); 
+    LinkList head,s,p;
+    int i = 1;
+    head = (LinkList)malloc(sizeof(LNode));
+    p = head;
+    if(n != 0)
+    {
+        while(i <= n)
+        {
+            s = (LinkList)malloc(sizeof(LNode));
+            s->data = i++;  //为链表初始化，第一个结点值为1，第二个为2这样以此类推
+            p->next = s;
+            p = s;
+        }
+         s->next = head->next;  
+    }
+    free(head);  
+    return s->next;  
+}
+
+
+
+int main()
+{
+    int n,m,i;
+    printf("输入参加的人数:\n");  
+    scanf("%d",&n);  
+    printf("输入每隔多少死一个人:\n");  
+    scanf("%d",&m);
+    LinkList p = createList(n);
+    LinkList temp;
+    m %= n;  //为了防止报数的人大于参与的人，求余可以理解为重头开始
+    while(p != p->next)
+    {
+        for(i = 1;i < m - 1;i++)
+        {
+            p = p->next; 
+        }
+        printf("第%d个人自杀了\t",p->next->data);
+        //删除第m个结点
+        temp = p->next;
+        p->next = temp->next;
+        free(temp);
+        p = p->next; 
+    } 
+    printf("\n第%d个人活下来了！\n\n", p->data );    
+    return 0;  
+}
+```  
