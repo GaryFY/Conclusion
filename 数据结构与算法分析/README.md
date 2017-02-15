@@ -50,7 +50,7 @@ void InitList(LinkList L)
     if(!L)exit(ERROR);
     L->next = NULL;
 }
-``` 
+```
      
 2. 将链表置为空表  
 
