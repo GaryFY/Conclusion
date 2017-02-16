@@ -38,7 +38,34 @@
 例：有趣的算法：查找单链表的中间结点    
 用两个不同的指针，按照不同的移动顺序来移动，这里我们暂且把他们成为**快慢指针**！     
 每次循环， **快指针向后移动两个结点： p = p -> next -> next； 
-慢指针向后移动一个结点： q = q -> next** 
+慢指针向后移动一个结点： q = q -> next**    
+原理：设置两个之子很*search、*mid都指向单链表的头节点。其中*search的移动速度是*mid的两倍。当*search指向末尾
+节点的时候，mid正好就在中间了，这也是**标尺**的思想。
+```c
+Status GetMidNode(LinkList L, ELemType *e)
+{
+	LinkList search,mid;
+	mid = search = L;
+	
+	while(search->next != NULL)
+	{
+		//search移动的速度是mid的2倍
+		if(search->next->next != NULL)
+		{
+			search = search->next->next;
+			mid = mid->next;
+		}
+		else
+		{
+			search = search->next;
+		}
+		 
+		*e = mid->data;
+		
+		return OK;
+	}
+}
+```
   
 ####12种基础基本操作代码实现  
 * 构造空表  
@@ -320,6 +347,7 @@ int main()
     return 0;  
 }
 ```  
+
 ####双向循环链表
 双向循环链表的特点：**多了一耳光指向前驱的指针**   
 判断空表：L ->next = L -> prior = L;  
@@ -699,3 +727,35 @@ void StackTraverse(SqStack S,void *visit(SElemType))
     printf("\n");
  }
 ```
+
+树
+----
+双亲孩子表示法
+```c
+#define MAX_TREE_SIZE 100
+
+typedef char ElemType;
+
+// 孩子结点
+typedef struct CTNode
+{
+	int child;  // 孩子结点的下标
+	struct CTNode *next;  // 指向下一个孩子结点的指针
+}*ChildPtr;
+
+// 表头结构
+typedef struct
+{
+	ElemType data;  // 存放在书中的结点的数据
+	int parent;  // 存放双亲的下标
+	ChildPtr firstchild;  // 指向第一个孩子的指针
+}CTBox;
+
+// 树结构
+typedef struct
+{
+	CTBox nodes[MAX_TREE_SIZE];  // 结点数组
+	int r,n;
+}
+```
+
