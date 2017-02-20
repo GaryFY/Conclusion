@@ -254,6 +254,16 @@ int main()
 **树、森林的前根（序）遍历和二叉树的前序遍历结果相同，
 树、森林的后根（序）遍历和二叉树的中序遍历结果相同**
 
+哈弗曼树
+----
+哈弗曼编码：定长编码，变长编码，前缀码   
+左子数用0表示，右子树用1表示    
+结点的权值是字符出现的次数
+* build a priority queue
+* build a huffmanTree
+* build a huffmanTable
+* encode
+* decode
 
 
 
