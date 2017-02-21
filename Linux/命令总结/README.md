@@ -42,3 +42,25 @@ reboot命令重启动系统时是**删除所有的进程**，而不是平稳地�
     
 * init是所有进程的祖先，其进程号始终为1。init用于切换系统的运行级别，切换的工作是立即完成的。
 init 0命令用于立即将系统运行级别切换为0，即关机；init 6命令用于将系统运行级别切换为6，即重新启动
+
+###rpm命令参数
+```
+－ivh：安装显示安装进度--install--verbose--hash 
+－Uvh：升级软件包--Update； 
+－qpl：列出RPM软件包内的文件信息[Query Package list]； 
+－qpi：列出RPM软件包的描述信息[Query Package install package(s)]； 
+－qf：查找指定文件属于哪个RPM软件包[Query File]； 
+－Va：校验所有的RPM软件包，查找丢失的文件[View Lost]； 
+－e：删除包
+```
+
+###ctrl+z
+* fg:将后台中的命令调至前台继续运行
+* bg:将一个在后台暂停的命令，变成继续执行
+* ctrl+z:可以将一个正在前台执行的命令放到后台，并且暂停
+
+###网络相关配置
+* /etc/hosts 主机名到 IP 地址的映射关系的文件
+* /etc/resolv.conf DNS 服务的配置文件 
+* /etc/gateways 建立动态路由需要用到的文件
+* /etc/HOSTNAME 这个文件存的是主机名 
