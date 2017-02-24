@@ -179,7 +179,8 @@ su或su -
 切换回root用户时要输入root密码。一般直接输入exit命令来切换回root用户，这样就不用输入密码。  
 区别：    
 * su只是切换用户 
-* su - 会切换环境变量
+* su - 会切换环境变量   
+
 ###服务器日志分析命令
 [grep,sed,sort,awk运用](http://blog.csdn.net/ultrani/article/details/6750434)
 ####统计日志中ip登陆次数
