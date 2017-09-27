@@ -110,3 +110,13 @@ UDP协议层也不会给应用层返回任何错误信息。
   
 TCP协议规定，主动关闭连接的一方要处于TIME_WAIT状态，等待**两个MSL（maximum segment lifetime）**的时间后才能回到CLOSED状态，
 需要有MSL 时间的主要原因是在这段时间内如果最后一个ack段没有发送给对方，则可以重新发送。
+
+
+###OSI七层
+* 物理层： RJ45 、 CLOCK 、 IEEE802.3 （中继器，集线器，网关） - 
+* 数据链路： PPP 、 FR 、 HDLC 、 VLAN 、 MAC （网桥，交换机） - 
+* 网络层： IP 、 ICMP 、 ARP 、 RARP 、 OSPF 、 IPX 、 RIP 、 IGRP 、 （路由器） - 
+* 传输层： TCP 、 UDP 、 SPX - 
+* 会话层： NFS 、 SQL 、 NETBIOS 、 RPC - 
+* 表示层： JPEG 、 MPEG 、 ASII - 
+* 应用层： FTP 、 DNS 、 Telnet 、 SMTP 、 HTTP 、 WWW 、 NFS
